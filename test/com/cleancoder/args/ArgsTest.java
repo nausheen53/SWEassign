@@ -44,7 +44,7 @@ public class ArgsTest {
 	  }catch(ArgsException e)
 	  {
 		  assertEquals(MISSING_STRING_ARGUMENT, e.getErrorCode());
-	      //assertEquals('x', e.getErrorArgumentId());
+	      
 	  }
   }
   
@@ -58,7 +58,7 @@ public class ArgsTest {
 	  }catch(ArgsException e)
 	  {
 		  assertEquals(INCOMPLETE_PREFIX,e.getErrorCode());
-		 // assertEquals('x',e.getErrorArgumentId());
+		 
 	  }
   }
   
@@ -74,7 +74,7 @@ public class ArgsTest {
 	  catch(ArgsException e)
 	  {
 		  assertEquals(INVALID_ARGUMENT_NAME,e.getErrorCode());
-		  //assertEquals('x',e.getErrorArgumentId());
+		
 	  }
   }
   
