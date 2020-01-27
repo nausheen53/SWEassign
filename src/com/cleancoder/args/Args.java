@@ -5,67 +5,59 @@ import java.util.*;
 import static com.cleancoder.args.ArgsException.ErrorCode.*;
 
 public class Args 
-{
+{	
+	
 	  private Map<Character, ArgumentMarshaler> marshalers;
 	  private Set<Character> argsFound;
 	  private ListIterator<String> currentArgument;
+	  private String schema;
+	  private List<String> argsList;
+	  
 	  Args(){}
 	  
 	 public Args(String schema, String[] args) throws ArgsException 
 	 {
 		 marshalers = new HashMap<Character, ArgumentMarshaler>();
 		 argsFound = new HashSet<Character>();
-	    parseSchema(schema);
-	    parseArgumentStrings(Arrays.asList(args));
+		 this.schema =schema;
+		 argsList = Arrays.asList(args);
+		 parseSchemaString();
 	  }
-
-//  private void parseSchema(String schema) throws ArgsException {
-//    for (String element : schema.split(","))
-//      if (element.length() > 0)
-//        parseSchemaElement(element.trim());
-//  }
+	 
+	 private void parseSchemaString()throws ArgsException
+	 {
+		 parseSchema();
+	     parseArgumentStrings();
+	 }
  
- private void parseSchema(String schema)throws ArgsException
+ private void parseSchema()throws ArgsException
  {
 		 if(schema.length()==0)
 			 throw new ArgsException(Missing_Schema);
 		 else
 		 {	
 			 for (String element : schema.split(","))
-				 parseSchemaElement(element.trim());
+				 if(element.length()<1)
+				 {
+					 throw new ArgsException (MISSING_SCHEMA_ARG);
+				 }
+				 else
+				 {
+					 parseSchemaElement(element.trim());
+				 }
+				 
 		 }
  }
-
-//  private void parseSchemaElement(String element) throws ArgsException {
-//    char elementId = element.charAt(0);
-//    String elementTail = element.substring(1);
-//    validateSchemaElementId(elementId);
-//    
-//    if (elementTail.length() == 0)
-//      marshalers.put(elementId, new BooleanArgumentMarshaler());
-//    else if (elementTail.equals("*"))
-//      marshalers.put(elementId, new StringArgumentMarshaler());
-//    else if (elementTail.equals("#"))
-//      marshalers.put(elementId, new IntegerArgumentMarshaler());
-//    else if (elementTail.equals("##"))
-//      marshalers.put(elementId, new DoubleArgumentMarshaler());
-//    else if (elementTail.equals("[*]"))
-//      marshalers.put(elementId, new StringArrayArgumentMarshaler());
-//    else if (elementTail.equals("&"))
-//      marshalers.put(elementId, new MapArgumentMarshaler());
-//    else
-//      throw new ArgsException(INVALID_ARGUMENT_FORMAT, elementId, elementTail);
-//  }
  
 	 private void parseSchemaElement(String element) throws ArgsException 
 	 	{
 		    char elementId = element.charAt(0);
 		    String elementTail = element.substring(1);
 		    validateSchemaElementId(elementId);
-		    putInMarshal(elementId,elementTail);
+		    putInMarshalers(elementId,elementTail);
 	 	}
 	
-	 private void putInMarshal(char elementId,String elementTail)throws ArgsException
+	 private void putInMarshalers(char elementId,String elementTail)throws ArgsException
 	  	{
 		  	if (elementTail.length() == 0)
 		      marshalers.put(elementId, new BooleanArgumentMarshaler());
@@ -88,8 +80,10 @@ public class Args
 	    if (!Character.isLetter(elementId))
 	      throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
 	  }
-
-	  private void parseArgumentStrings(List<String> argsList) throws ArgsException {
+	  
+	 
+	  private void parseArgumentStrings() throws ArgsException 
+	  {
 		  if(argsList.isEmpty())
 		  {
 			  throw new ArgsException(MISSING_STRING_ARGUMENT);
@@ -116,67 +110,55 @@ public class Args
 			    	  currentArgument.previous();
 				      break;
 			      }
-			      
-	//		      if (argString.startsWith("-")) {
-	//			        parseArgumentCharacters(argString.substring(1));
-	//			      } else {
-	//			        currentArgument.previous();
-	//			        break;
-	//			      }
-	//		    }
 			  }
 	
+		  }
 	  }
-	  }
+	  
+	  
 
 		private boolean argStringValidate(String argString)
-			{
+		{
 				if(argString.startsWith("-"))
 					return true;
 				else
 					return false;
-			}
+		}
   
 	  private void parseArgumentCharacters(String argChars) throws ArgsException 
-		  {
+	  {
 		    for (int i = 0; i < argChars.length(); i++)
 		      parseArgumentCharacter(argChars.charAt(i));
-		  }
+	  }
 
 	  private void parseArgumentCharacter(char argChar) throws ArgsException 
-		  {
-		    ArgumentMarshaler m = marshalers.get(argChar);  //boolean marsh implemnt kiya h arg mashlr
-		    if (m == null) 
-		    	{
-		    		throw new ArgsException(UNEXPECTED_ARGUMENT, argChar, null);
-		    	} 
-		    else
-		    	{
-			      argsFound.add(argChar);
-			      setCurrentArgument(currentArgument,argChar,m);
-		//      try {  // new fnt bna
-		//        m.set(currentArgument);
-		//      } catch (ArgsException e) {
-		//        e.setErrorArgumentId(argChar);
-		//        throw e;
-		//      }
-		    	}
-		  }
+	  {
+		 ArgumentMarshaler m = marshalers.get(argChar);  //boolean marsh implemnt kiya h arg mashlr
+		 if (m == null) 
+		 {
+		    	throw new ArgsException(UNEXPECTED_ARGUMENT, argChar, null);
+		 } 
+		  else
+		   {
+			  argsFound.add(argChar);
+			  setCurrentArgument(currentArgument,argChar,m);
+		    }
+	  }
   
   public void setCurrentArgument(ListIterator<String> currentArgument,
 								char argChar,
 								ArgumentMarshaler m)throws ArgsException
+  {
+	try 
+		{  
+			m.set(currentArgument);
+		} 
+	catch (ArgsException e) 
 		{
-			try 
-				{  
-					m.set(currentArgument);
-				} 
-					catch (ArgsException e) 
-				{
-					e.setErrorArgumentId(argChar);
-					throw e;
-				}
+			e.setErrorArgumentId(argChar);
+			throw e;
 		}
+  }
   
   public boolean has(char arg) 
   {

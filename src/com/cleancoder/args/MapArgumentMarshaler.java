@@ -8,11 +8,11 @@ import java.util.NoSuchElementException;
 import static com.cleancoder.args.ArgsException.ErrorCode.*;
 
 public class MapArgumentMarshaler implements ArgumentMarshaler {
-	  private Map<String, String> map ;
+	  private Map<String, String> map;
   
 	  MapArgumentMarshaler()
 	  {
-		  map=new HashMap<>();
+		 map=new HashMap<>();
 	  }
 	  public void set(Iterator<String> currentArgument) throws ArgsException 
 	  {

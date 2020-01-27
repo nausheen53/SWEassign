@@ -7,20 +7,21 @@ public class ArgsException extends Exception {
 	 * 
 	 */
 private static final long serialVersionUID = 1L;
-  private char errorArgumentId = '\0';
-  private String errorParameter = null;
-  private ErrorCode errorCode = OK;
+  private char errorArgumentId;
+  private String errorParameter;
+  private ErrorCode errorCode;
   
-  ArgsException()
+  public ArgsException() 
   {
 	  errorArgumentId = '\0';
 	  errorParameter = null;
 	  errorCode = OK;
   }
-  
-  public ArgsException() {}
 
-  public ArgsException(String message) {super(message);}
+  public ArgsException(String message)
+  {
+	  super(message);
+  }
 
   public ArgsException(ErrorCode errorCode) 
   {
@@ -104,6 +105,8 @@ private static final long serialVersionUID = 1L;
     	  return String.format("Please enter valid argument");
       case INCOMPLETE_PREFIX:
     	  return String.format("You entered an incomplete prefix");
+      case MISSING_SCHEMA_ARG:
+    	  return String.format("You forgot to enter one or more schema");
     }
     return "";
   }
@@ -113,5 +116,5 @@ private static final long serialVersionUID = 1L;
     OK, INVALID_ARGUMENT_FORMAT, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME,
     MISSING_STRING,
     MISSING_INTEGER, INVALID_INTEGER,
-    MISSING_DOUBLE, MALFORMED_MAP, MISSING_MAP, INVALID_DOUBLE,Missing_Schema,MISSING_STRING_ARGUMENT,INCOMPLETE_PREFIX}
+    MISSING_DOUBLE, MALFORMED_MAP, MISSING_MAP, INVALID_DOUBLE,Missing_Schema,MISSING_STRING_ARGUMENT,INCOMPLETE_PREFIX,MISSING_SCHEMA_ARG}
 }
