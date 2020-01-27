@@ -68,7 +68,6 @@ public class Args
 		 
 	    if (!Character.isLetter(elementId))
 	    {
-	    	//System.out.println("element id is "+elementId);
 		      throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
 	    }
 	    	
@@ -132,7 +131,7 @@ public class Args
 
 	  private void parseArgumentCharacter(char argChar) throws ArgsException 
 	  {
-		 ArgumentMarshaler m = marshalers.get(argChar);  //boolean marsh implemnt kiya h arg mashlr
+		 ArgumentMarshaler m = marshalers.get(argChar);  
 		 if (m == null) 
 		 {
 		    	throw new ArgsException(UNEXPECTED_ARGUMENT, argChar, null);
