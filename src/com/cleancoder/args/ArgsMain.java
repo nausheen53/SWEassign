@@ -9,7 +9,7 @@ public class ArgsMain {
   {
     try 
     {
-	      Args arg = new Args("l,p#,d*,m&,a##,s[*]", args);
+	      Args arg = new Args("", args);
 	      boolean logging = arg.getBoolean('l');
 	      int port = arg.getInt('p');
 	      String directory = arg.getString('d');

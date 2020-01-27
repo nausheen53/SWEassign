@@ -99,14 +99,13 @@ private static final long serialVersionUID = 1L;
         return String.format("Could not find map string for -%c.", errorArgumentId);
       case MALFORMED_MAP:
         return String.format("Map string for -%c is not of form k1:v1,k2:v2...", errorArgumentId);
-      case Missing_Schema:
-    	  return String.format("Please enter valid schema");
       case MISSING_STRING_ARGUMENT:
     	  return String.format("Please enter valid argument");
       case INCOMPLETE_PREFIX:
     	  return String.format("You entered an incomplete prefix");
-      case MISSING_SCHEMA_ARG:
-    	  return String.format("You forgot to enter one or more schema");
+      case WRONG_SCHEMA:
+    	  return String.format("you have entered an invalid schema argument");
+      
     }
     return "";
   }
@@ -116,5 +115,5 @@ private static final long serialVersionUID = 1L;
     OK, INVALID_ARGUMENT_FORMAT, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME,
     MISSING_STRING,
     MISSING_INTEGER, INVALID_INTEGER,
-    MISSING_DOUBLE, MALFORMED_MAP, MISSING_MAP, INVALID_DOUBLE,Missing_Schema,MISSING_STRING_ARGUMENT,INCOMPLETE_PREFIX,MISSING_SCHEMA_ARG}
+    MISSING_DOUBLE, MALFORMED_MAP, MISSING_MAP, INVALID_DOUBLE,MISSING_STRING_ARGUMENT,INCOMPLETE_PREFIX,WRONG_SCHEMA}
 }

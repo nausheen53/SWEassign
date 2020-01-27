@@ -1,30 +1,47 @@
-This is the java version of the Args program described in: http://butunclebob.com/ArticleS.UncleBob.CleanCodeArgs
+A.Explaination of implemented features
+	checked whether the schema entered by user is valid or not.
+	for example,since schema is a character so it must be of 		length one.
 
-public class ArgsMain {
-  public static void main(String[] args) {
-    try {
-      Args arg = new Args("l,p#,d*", args);
-      boolean logging = arg.getBoolean('l');
-      int port = arg.getInt('p');
-      String directory = arg.getString('d');
-      executeApplication(logging, port, directory);
-    } catch (ArgsException e) {
-      System.out.printf("Argument error: %s\n", e.errorMessage());
-    }
-  }
+	checked a condition where if a user put only '-' instead of '-d'(for example) it throws an exception
 
-  private static void executeApplication(boolean logging, int port, String directory) {
-    System.out.printf("logging is %s, port:%d, directory:%s\n",logging, port, directory);
-  }
-}
+	User needs to enter some argument (atleast one),else it will 		throw an exception
 
-Schema:
- - char    - Boolean arg.
- - char*   - String arg.
- - char#   - Integer arg.
- - char##  - double arg.
- - char[*] - one element of a string array.
+	if schema is empty,program throws an exception
 
-Example schema: (f,s*,n#,a##,p[*])
-Coresponding command line: "-f -s Bob -n 1 -a 3.2 -p e1 -p e2 -p e3
+B.1 Requirements
+	user must enter some argument
+
+B.2 Execution
+	Open terminal from /home/user/folder/src/com/cleancoder/args
+	
+to compile :
+javac ArgsException.java ArgumentMarshaler.java 	BooleanArgumentMarshaler.java DoubleArgumentMarshaler.java MapArgumentMarshaler.java StringArrayArgumentMarshaler.java StringArgumentMarshaler.java IntegerArgumentMarshaler.java Args.java ArgsMain.java 
+
+after that you need to be at src i.e. /home/user/folder/src
+
+to run program:
+	 java com.cleancoder.args.ArgsMain -l -p 56 -d any_String   -m key:value -a 99.99 -s hello -s world
+
+B3. Unit test
+
+test for all cases are present in ArgsTest.java
+
+go to /home/user/folder/test
+
+to run:
+java -cp "lib/junit-4.13.jar:lib/hamcrest-core-1.3.jar:build/jar/args.jar" ./test/com/cleancoder/args/ArgsTest.java
+
+C:
+code is self explainatory
+created methods instead of writing big functions
+use error handling
+
+
+
+
+
+
+
+	
+	
 

@@ -54,5 +54,30 @@ public class ArgsExceptionTest extends TestCase {
     ArgsException e = new ArgsException(INVALID_ARGUMENT_FORMAT, 'x', "$");
     assertEquals("'$' is not a valid argument format.", e.errorMessage());
   }
+  
+  public void testEmptySchema()throws Exception
+  {
+	  ArgsException e = new ArgsException(MISSING_SCHEMA,'x',null);
+	  assertEquals("Please enter valid schema",e.errorMessage());
+  }
+  
+  public void testMissingArgument()throws Exception
+  {
+	  ArgsException e = new ArgsException(MISSING_STRING_ARGUMENT,'x',null);
+	  assertEquals("Please enter valid argument",e.errorMessage());
+  }
+  
+  public void testIncompletePrefix()throws Exception
+  {
+	  ArgsException e = new ArgsException(INCOMPLETE_PREFIX,'x',null);
+	  assertEquals("You entered an incomplete prefix",e.errorMessage());
+  }
+  
+  public void testWrongSchema() throws Exception
+  {
+	  ArgsException e = new ArgsException(WRONG_PREFIX,'x',null);
+	  assertEquals("you have entered an invalid schema argument");
+  }
 }
+
 

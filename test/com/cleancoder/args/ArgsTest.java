@@ -22,38 +22,7 @@ public class ArgsTest {
       System.out.println(result.wasSuccessful());
   }
 
-  @Test
-  public void testCreateWithNoSchemaOrArguments() throws Exception {
-
-    Args args = new Args("", new String[0]);
-    assertEquals(0, args.nextArgument());
-  }
-
-
-  @Test
-  public void testWithNoSchemaButWithOneArgument() throws Exception {
-    try {
-
-      new Args("", new String[]{"-x"});
-      fail();
-    } catch (ArgsException e) {
-      assertEquals(UNEXPECTED_ARGUMENT, e.getErrorCode());
-      assertEquals('x', e.getErrorArgumentId());
-    }
-  }
-
-  @Test
-  public void testWithNoSchemaButWithMultipleArguments() throws Exception {
-    try {
-      new Args("", new String[]{"-x", "-y"});
-      fail();
-    } catch (ArgsException e) {
-      assertEquals(UNEXPECTED_ARGUMENT, e.getErrorCode());
-      assertEquals('x', e.getErrorArgumentId());
-    }
-
-  }
-
+  
   @Test
   public void testNonLetterSchema() throws Exception {
     try {
@@ -64,6 +33,52 @@ public class ArgsTest {
       assertEquals('*', e.getErrorArgumentId());
     }
   }
+ 
+  @Test
+  public void testMissingArgument()throws Exception
+  {
+	  try
+	  {
+		  new Args("x",new String[0] );
+		  fail();
+	  }catch(ArgsException e)
+	  {
+		  assertEquals(MISSING_STRING_ARGUMENT, e.getErrorCode());
+	      //assertEquals('x', e.getErrorArgumentId());
+	  }
+  }
+  
+  @Test
+  public void testIncompletePrefix() throws Exception
+  {
+	  try
+	  {
+		  new Args("x,y",new String[] {"-","y"});
+		  fail();
+	  }catch(ArgsException e)
+	  {
+		  assertEquals(INCOMPLETE_PREFIX,e.getErrorCode());
+		 // assertEquals('x',e.getErrorArgumentId());
+	  }
+  }
+  
+  
+  @Test
+  public void testWrongschema() throws Exception
+  {
+	  try
+	  {
+		  new Args("-x",new String[] {"-xy"});
+		  fail();
+	  }
+	  catch(ArgsException e)
+	  {
+		  assertEquals(INVALID_ARGUMENT_NAME,e.getErrorCode());
+		  //assertEquals('x',e.getErrorArgumentId());
+	  }
+  }
+  
+
 
   @Test
   public void testInvalidArgumentFormat() throws Exception {
@@ -102,13 +117,7 @@ public class ArgsTest {
     }
   }
 
-  @Test
-  public void testSpacesInFormat() throws Exception {
-    Args args = new Args("x, y", new String[]{"-xy"});
-    assertTrue(args.has('x'));
-    assertTrue(args.has('y'));
-    assertEquals(1, args.nextArgument());
-  }
+ 
 
   @Test
   public void testSimpleIntPresent() throws Exception {
@@ -244,4 +253,5 @@ public class ArgsTest {
   }
 
 }
+
 

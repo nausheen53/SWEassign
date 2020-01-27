@@ -32,21 +32,8 @@ public class Args
  
  private void parseSchema()throws ArgsException
  {
-		 if(schema.length()==0)
-			 throw new ArgsException(Missing_Schema);
-		 else
-		 {	
 			 for (String element : schema.split(","))
-				 if(element.length()<1)
-				 {
-					 throw new ArgsException (MISSING_SCHEMA_ARG);
-				 }
-				 else
-				 {
-					 parseSchemaElement(element.trim());
-				 }
-				 
-		 }
+					 parseSchemaElement(element.trim());		 
  }
  
 	 private void parseSchemaElement(String element) throws ArgsException 
@@ -76,9 +63,15 @@ public class Args
 	  	}
  
 	  private void validateSchemaElementId(char elementId) throws ArgsException
-	  {
+	  {		
+		  
+		 
 	    if (!Character.isLetter(elementId))
-	      throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
+	    {
+	    	//System.out.println("element id is "+elementId);
+		      throw new ArgsException(INVALID_ARGUMENT_NAME, elementId, null);
+	    }
+	    	
 	  }
 	  
 	 
@@ -126,9 +119,15 @@ public class Args
 		}
   
 	  private void parseArgumentCharacters(String argChars) throws ArgsException 
-	  {
-		    for (int i = 0; i < argChars.length(); i++)
-		      parseArgumentCharacter(argChars.charAt(i));
+	  {	
+		  	if(argChars.length()>1)
+		  	{
+		  		throw new ArgsException(WRONG_SCHEMA);
+		  	}
+		  	else
+		  		parseArgumentCharacter(argChars.charAt(0));
+//		    for (int i = 0; i < argChars.length(); i++)
+//		      parseArgumentCharacter(argChars.charAt(i));
 	  }
 
 	  private void parseArgumentCharacter(char argChar) throws ArgsException 
